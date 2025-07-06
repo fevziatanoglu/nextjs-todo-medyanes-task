@@ -7,4 +7,8 @@ declare module "next-auth" {
   interface Session {
     user?: User;
   }
+  interface SignInResponse {
+    user?: User;
+    error?: string;
+  }
 }

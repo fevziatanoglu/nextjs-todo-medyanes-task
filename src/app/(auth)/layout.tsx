@@ -13,7 +13,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
   useEffect(() => {
     if (status === 'authenticated' && session) {
       setUser({
-        id: (session.user as { id?: string }).id ?? '',
+        id: (session.user as { id?: string; }).id ?? '',
         email: session.user?.email ?? '',
         name: session.user?.name ?? '',
       });

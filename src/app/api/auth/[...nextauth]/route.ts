@@ -19,17 +19,21 @@ const handler = NextAuth({
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          return null;
+          throw new Error('Email and password are required');
         }
-
+        
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
 
-        if (!user || !user.password) return null;
+        if (!user || !user.password) {
+          throw new Error('Wrong email or password');
+        }
 
         const isValid = await compare(credentials.password, user.password);
-        if (!isValid) return null;
+        if (!isValid) {
+          throw new Error('Wrong email or password');
+        }
 
         return { id: user.id, email: user.email, name: user.name };
       },
@@ -37,14 +41,12 @@ const handler = NextAuth({
   ],
   callbacks: {
     async jwt({ token, user }) {
-      // İlk login'de user objesi gelir, sonrasında sadece token döner
       if (user) {
-        token.id = user.id; // MongoDB ObjectId
+        token.id = user.id;
       }
       return token;
     },
     async session({ session, token }) {
-      // Session'a id ekle
       if (session.user && token.id) {
         session.user.id = token.id as string;
       }
