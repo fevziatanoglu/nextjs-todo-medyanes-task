@@ -67,8 +67,12 @@ export const createTodoSlice = (set: any, get: any): TodoStore => ({
   deleteTodo: async (id) => {
     set({ isTodoLoading: true, error: null });
     try {
-      await fetch(`/api/todos/${id}`, { method: 'DELETE' });
-      set({ todos: get().todos.filter((todo: Todo) => todo.id !== id) });
+      const res = await fetch(`/api/todos/${id}`, { method: 'DELETE' });
+      if (!res.ok) {
+        throw new Error('Failed to delete todo');
+      } else {
+        set({ todos: get().todos.filter((todo: Todo) => todo.id !== id) });
+      }
     } catch (err) {
       set({ error: 'Failed to delete todo' });
     } finally {
