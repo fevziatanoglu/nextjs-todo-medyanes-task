@@ -1,21 +1,20 @@
 import React from 'react';
-import { create } from 'zustand';
 
-type ModalStore = {
+export type ModalStore = {
   isOpen: boolean;
   modalTitle?: string;
   modalChild: React.ReactNode | null;
-  openModal: (modalChild: React.ReactNode , modalTitle : string) => void;
+  openModal: (modalChild: React.ReactNode, modalTitle: string) => void;
   closeModal: () => void;
 };
 
-export const useModalStore = create<ModalStore>((set) => ({
+export const createModalSlice = (set: any): ModalStore => ({
   isOpen: false,
   modalChild: undefined,
-  openModal: (modalChild , modalTitle)=>{
+  openModal: (modalChild, modalTitle) => {
     set({ isOpen: true, modalChild, modalTitle });
   },
   closeModal: () => {
     set({ isOpen: false, modalChild: null, modalTitle: undefined });
   },
-}));
+});

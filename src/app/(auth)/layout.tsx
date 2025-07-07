@@ -1,14 +1,14 @@
 'use client';
 
+import useRootStore from '@/store';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { useAuthStore } from '@/store/authStore';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const setUser = useAuthStore((state) => state.setUser);
+  const {setUser} = useRootStore();
 
   useEffect(() => {
     if (status === 'authenticated' && session) {

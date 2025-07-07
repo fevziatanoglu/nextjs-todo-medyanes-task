@@ -3,10 +3,10 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signupSchema, SignupSchema } from '@/validation/signUpValidation';
-import { useAuthStore } from '@/store/authStore';
 import SubmitButton from '@/components/global/submitButton';
 import HookFormInput from '@/components/global/hookFormInput';
 import { useRouter } from 'next/navigation';
+import useRootStore from '@/store';
 
 export default function SignupForm() {
     const router = useRouter();
@@ -21,7 +21,7 @@ export default function SignupForm() {
     mode: 'onChange',
   });
 
-  const { error, isLoading, signupFetch } = useAuthStore();
+  const { error, isLoading, signupFetch } = useRootStore();
 
   const onSubmit = async (data: SignupSchema) => {
     await signupFetch(data);

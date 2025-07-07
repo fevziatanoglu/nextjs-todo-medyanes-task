@@ -1,10 +1,10 @@
 "use client"
 
-import { useAuthStore } from "@/store/authStore";
+import useRootStore from "@/store";
 import { LogOut, Loader2 } from "lucide-react";
 
 export default function LogoutButton() {
-  const { logoutFetch, isLoading } = useAuthStore();
+  const { logoutFetch, isLoading } = useRootStore();
   
   const handleLogout = async () => {
     await logoutFetch();

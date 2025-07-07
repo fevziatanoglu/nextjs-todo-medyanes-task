@@ -1,9 +1,10 @@
 'use client';
 
-import { useModalStore } from '@/store/modalStore';
+import useRootStore from "@/store";
+
 
 export default function Modal() {
-  const { isOpen, modalChild, modalTitle, closeModal } = useModalStore();
+  const { isOpen, modalChild, modalTitle, closeModal } = useRootStore();
 
   if (!isOpen) return null;
 

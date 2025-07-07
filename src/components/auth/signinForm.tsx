@@ -3,9 +3,9 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signinSchema, SigninSchema } from '@/validation/signInValidation';
-import { useAuthStore } from '@/store/authStore';
 import SubmitButton from '@/components/global/submitButton';
 import HookFormInput from '@/components/global/hookFormInput';
+import useRootStore from '@/store';
 
 export default function SigninForm() {
   const form = useForm<SigninSchema>({
@@ -17,7 +17,7 @@ export default function SigninForm() {
     mode: 'onChange',
   });
 
-  const { error, isLoading, signInFetch } = useAuthStore();
+  const { error, isLoading, signInFetch } = useRootStore();
 
   const onSubmit = async (data: SigninSchema) => {
     await signInFetch(data);

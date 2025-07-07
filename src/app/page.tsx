@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { CheckSquare, Plus, Clock, Users, Star, ArrowRight, Check, Github, Mail, HomeIcon } from "lucide-react";
-import { useModalStore } from "@/store/modalStore";
 import SignupForm from "@/components/auth/signupForm";
 import SigninForm from "@/components/auth/signinForm";
+import useRootStore from "@/store";
 
 export default function Home() {
-  const { openModal } = useModalStore()
+  const { openModal } = useRootStore()
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       {/* Hero Section */}

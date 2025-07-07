@@ -2,10 +2,8 @@ import { User } from '@/types/user';
 import { SigninSchema } from '@/validation/signInValidation';
 import { SignupSchema } from '@/validation/signUpValidation';
 import { signIn, signOut } from 'next-auth/react';
-import { create } from 'zustand';
-import Router from 'next/router';
 
-type AuthStore = {
+export type AuthStore = {
   user: User | null;
   error: string | null;
   isLoading: boolean;
@@ -15,7 +13,7 @@ type AuthStore = {
   logoutFetch: () => Promise<void>;
 };
 
-export const useAuthStore = create<AuthStore>((set) => ({
+export const createAuthSlice = (set: any): AuthStore => ({
   user: null,
   error: null,
   isLoading: false,
@@ -67,10 +65,9 @@ export const useAuthStore = create<AuthStore>((set) => ({
       await signOut({ redirect: false });
       set({ user: null, error: null });
     } catch (err) {
-      console.error('Logout error:', err);
       set({ error: 'Something went wrong, please try again later', user: null });
     } finally {
       set({ isLoading: false });
     }
   }
-}));
+});
