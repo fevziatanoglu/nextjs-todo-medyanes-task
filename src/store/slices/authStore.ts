@@ -6,20 +6,20 @@ import { signIn, signOut } from 'next-auth/react';
 export type AuthStore = {
   user: User | null;
   error: string | null;
-  isLoading: boolean;
+  isUserLoading: boolean;
   setUser: (user: User | null) => void;
   signInFetch: (userData: SigninSchema) => Promise<void>;
   signupFetch: (userData: SignupSchema) => Promise<void>;
   logoutFetch: () => Promise<void>;
 };
 
-export const createAuthSlice = (set: any): AuthStore => ({
+export const createAuthSlice = (set: any, get: any): AuthStore => ({
   user: null,
   error: null,
-  isLoading: false,
+  isUserLoading: false,
   setUser: (user) => set({ user }),
   signInFetch: async (userData) => {
-    set({ isLoading: true, error: null });
+    set({ isUserLoading: true, error: null });
     try {
       const res = await signIn('credentials', {
         ...userData,
@@ -33,11 +33,13 @@ export const createAuthSlice = (set: any): AuthStore => ({
     } catch (err) {
       set({ error: 'Something went wrong, please try again later', user: null });
     } finally {
-      set({ isLoading: false });
+      set({ isUserLoading: false });
+      get().closeModal()
+
     }
   },
   signupFetch: async (userData) => {
-    set({ isLoading: true, error: null });
+    set({ isUserLoading: true, error: null });
     try {
       const res = await fetch('/api/auth/signup', {
         method: 'POST',
@@ -56,18 +58,19 @@ export const createAuthSlice = (set: any): AuthStore => ({
     } catch (err) {
       set({ error: 'Something went wrong, please try again later', user: null });
     } finally {
-      set({ isLoading: false });
+      set({ isUserLoading: false });
+      get().closeModal()
     }
   },
   logoutFetch: async () => {
-    set({ isLoading: true, error: null });
+    set({ isUserLoading: true, error: null });
     try {
       await signOut({ redirect: false });
       set({ user: null, error: null });
     } catch (err) {
       set({ error: 'Something went wrong, please try again later', user: null });
     } finally {
-      set({ isLoading: false });
+      set({ isUserLoading: false });
     }
   }
 });

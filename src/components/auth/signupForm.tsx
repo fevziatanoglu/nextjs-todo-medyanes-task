@@ -21,7 +21,7 @@ export default function SignupForm() {
     mode: 'onChange',
   });
 
-  const { error, isLoading, signupFetch } = useRootStore();
+  const { error, isUserLoading, signupFetch } = useRootStore();
 
   const onSubmit = async (data: SignupSchema) => {
     await signupFetch(data);
@@ -90,7 +90,7 @@ export default function SignupForm() {
       <div className="pt-2">
         <SubmitButton 
           text="Create Account" 
-          isLoading={isLoading} 
+          isUserLoading={isUserLoading} 
           disabled={!form.formState.isValid}
           className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-200 ease-in-out transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
         />

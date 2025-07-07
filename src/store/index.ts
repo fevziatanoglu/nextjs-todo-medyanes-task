@@ -4,8 +4,8 @@ import { createModalSlice, ModalStore } from './slices/modalStore';
 
 type RootStore = AuthStore & ModalStore;
 
-const useRootStore = create<RootStore>()((set) => ({
-  ...createAuthSlice(set),
+const useRootStore = create<RootStore>()((set , get) => ({
+  ...createAuthSlice(set , get),
   ...createModalSlice(set),
 }));
 
