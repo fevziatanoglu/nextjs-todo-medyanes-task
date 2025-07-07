@@ -5,10 +5,13 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { Menu, X, CheckSquare, User, LogOut, Plus } from 'lucide-react';
 import LogoutButton from '@/components/auth/logoutButton';
+import useRootStore from '@/store';
+import CreateTodoForm from '../todo/createTodoForm';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session, status } = useSession();
+  const { openModal } = useRootStore();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -31,42 +34,21 @@ export default function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
-              {session ? (
+              {session && (
                 <>
                   <Link
-                    href="/dashboard"
+                    href="/home"
                     className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition duration-200"
                   >
-                    Dashboard
+                    Home
                   </Link>
-                  <Link
-                    href="/todos"
-                    className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition duration-200"
-                  >
-                    My Todos
-                  </Link>
-                  <Link
-                    href="/todos/new"
+                  <button
+                    onClick={() => openModal(<CreateTodoForm />, "Create Todo")}
                     className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 flex items-center space-x-1"
                   >
                     <Plus className="w-4 h-4" />
                     <span>New Todo</span>
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <Link
-                    href="/about"
-                    className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition duration-200"
-                  >
-                    About
-                  </Link>
-                  <Link
-                    href="/features"
-                    className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition duration-200"
-                  >
-                    Features
-                  </Link>
+                  </button>
                 </>
               )}
             </div>
@@ -134,26 +116,19 @@ export default function Navbar() {
             {session ? (
               <>
                 <Link
-                  href="/dashboard"
+                  href="/home"
                   className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Dashboard
+                  Home
                 </Link>
-                <Link
-                  href="/todos"
-                  className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium"
-                  onClick={() => setIsMenuOpen(false)}
+                <button
+                  onClick={() => openModal(<CreateTodoForm />, "Create Todo")}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 flex items-center space-x-1"
                 >
-                  My Todos
-                </Link>
-                <Link
-                  href="/todos/new"
-                  className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  New Todo
-                </Link>
+                  <Plus className="w-4 h-4" />
+                  <span>New Todo</span>
+                </button>
                 <div className="border-t border-gray-200 pt-4 pb-3">
                   <div className="flex items-center px-3">
                     <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mr-3">
@@ -172,20 +147,6 @@ export default function Navbar() {
               </>
             ) : (
               <>
-                <Link
-                  href="/about"
-                  className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  About
-                </Link>
-                <Link
-                  href="/features"
-                  className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Features
-                </Link>
                 <div className="border-t border-gray-200 pt-4 pb-3">
                   <div className="space-y-2 px-3">
                     <Link

@@ -10,7 +10,7 @@ export default function PublicOnlyLayout({ children }: { children: React.ReactNo
 
     useEffect(() => {
         if (status === 'authenticated') {
-            router.replace('/dashboard'); 
+            router.replace('/home'); 
         }
     }, [status, router]);
 
