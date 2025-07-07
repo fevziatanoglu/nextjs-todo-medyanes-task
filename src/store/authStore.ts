@@ -5,8 +5,6 @@ import { signIn, signOut } from 'next-auth/react';
 import { create } from 'zustand';
 import Router from 'next/router';
 
-
-
 type AuthStore = {
   user: User | null;
   error: string | null;
@@ -36,8 +34,9 @@ export const useAuthStore = create<AuthStore>((set) => ({
       }
     } catch (err) {
       set({ error: 'Something went wrong, please try again later', user: null });
+    } finally {
+      set({ isLoading: false });
     }
-    set({ isLoading: false });
   },
   signupFetch: async (userData) => {
     set({ isLoading: true, error: null });
@@ -55,23 +54,23 @@ export const useAuthStore = create<AuthStore>((set) => ({
       }
       if (data.user) {
         set({ error: null });
-        Router.push('/signin');
       }
     } catch (err) {
       set({ error: 'Something went wrong, please try again later', user: null });
+    } finally {
+      set({ isLoading: false });
     }
-    set({ isLoading: false });
   },
   logoutFetch: async () => {
     set({ isLoading: true, error: null });
-    try{
+    try {
       await signOut({ redirect: false });
       set({ user: null, error: null });
-      Router.push('/signin');
-    }catch (err) {
+    } catch (err) {
       console.error('Logout error:', err);
       set({ error: 'Something went wrong, please try again later', user: null });
+    } finally {
+      set({ isLoading: false });
     }
-    set({ isLoading: false });
   }
 }));

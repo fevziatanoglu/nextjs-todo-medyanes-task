@@ -6,8 +6,11 @@ import { signupSchema, SignupSchema } from '@/validation/signUpValidation';
 import { useAuthStore } from '@/store/authStore';
 import SubmitButton from '@/components/global/submitButton';
 import HookFormInput from '@/components/global/hookFormInput';
+import { useRouter } from 'next/navigation';
 
 export default function SignupForm() {
+    const router = useRouter();
+  
   const form = useForm<SignupSchema>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -22,6 +25,9 @@ export default function SignupForm() {
 
   const onSubmit = async (data: SignupSchema) => {
     await signupFetch(data);
+    if(!error){
+      router.push("signin")
+    }
   };
 
   return (
