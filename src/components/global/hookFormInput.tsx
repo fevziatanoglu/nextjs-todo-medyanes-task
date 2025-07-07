@@ -23,7 +23,7 @@ export default function HookFormInput({
             type={type}
             placeholder={placeholder}
             {...field}
-            className={`border p-2 rounded ${className}`}
+            className={`text-black border p-2 rounded ${className}`}
             />
         )}
         />

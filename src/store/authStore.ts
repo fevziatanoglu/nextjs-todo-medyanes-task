@@ -1,7 +1,7 @@
 import { User } from '@/types/user';
 import { SigninSchema } from '@/validation/signInValidation';
 import { SignupSchema } from '@/validation/signUpValidation';
-import { signIn } from 'next-auth/react';
+import { signIn, signOut } from 'next-auth/react';
 import { create } from 'zustand';
 import Router from 'next/router';
 
@@ -12,8 +12,9 @@ type AuthStore = {
   error: string | null;
   isLoading: boolean;
   setUser: (user: User | null) => void;
-  signInFetch: (userData:SigninSchema) => Promise<void>;
-  signupFetch: (userData:SignupSchema) => Promise<void>;
+  signInFetch: (userData: SigninSchema) => Promise<void>;
+  signupFetch: (userData: SignupSchema) => Promise<void>;
+  logoutFetch: () => Promise<void>;
 };
 
 export const useAuthStore = create<AuthStore>((set) => ({
@@ -52,11 +53,23 @@ export const useAuthStore = create<AuthStore>((set) => ({
       if (!res.ok) {
         set({ error: data.error || 'Signup failed', user: null });
       }
-      if (data.user) {  
+      if (data.user) {
         set({ error: null });
-        Router.push('/signin'); 
+        Router.push('/signin');
       }
     } catch (err) {
+      set({ error: 'Something went wrong, please try again later', user: null });
+    }
+    set({ isLoading: false });
+  },
+  logoutFetch: async () => {
+    set({ isLoading: true, error: null });
+    try{
+      await signOut({ redirect: false });
+      set({ user: null, error: null });
+      Router.push('/signin');
+    }catch (err) {
+      console.error('Logout error:', err);
       set({ error: 'Something went wrong, please try again later', user: null });
     }
     set({ isLoading: false });

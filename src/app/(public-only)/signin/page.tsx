@@ -1,60 +1,30 @@
-'use client';
-
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { signinSchema, SigninSchema } from '@/validation/signInValidation';
-import { useAuthStore } from '@/store/authStore';
-import SubmitButton from '@/components/global/submitButton';
-import HookFormInput from '@/components/global/hookFormInput';
+import SigninForm from "@/components/auth/signinForm";
+import { LogIn, Shield, Users, Lock, HandHeart } from "lucide-react";
 
 export default function SigninPage() {
-  const router = useRouter();
-  const form = useForm<SigninSchema>({
-    resolver: zodResolver(signinSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-    mode: 'onChange',
-  });
-
-  const { error, isLoading, signInFetch } = useAuthStore()
-
-  const onSubmit = async (data: SigninSchema) => {
-    signInFetch(data)
-  };
-
   return (
-    <div className="max-w-md mx-auto p-4">
-      <h1 className="text-2xl mb-4">Log In</h1>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-3">
+    <div className="min-h-screen flex pt-15 lg:pt-20 items-baseline justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        {/* Header */}
+        <div className="text-center">
+          <div className="mx-auto w-16 h-16 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-full flex items-center justify-center mb-6 shadow-lg">
+            <HandHeart className="w-8 h-8 text-indigo-600" />
+          </div>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">
+            Welcome back
+          </h2>
+          <p className="text-sm text-gray-600">
+            Please sign in to your account
+          </p>
+        </div>
 
-        <HookFormInput
-          name="email"
-          control={form.control}
-          type="email"
-          placeholder="Email"
-          className="border p-2 rounded"
-        />
+        {/* Form Container */}
+        <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+          <SigninForm />
+        </div>
 
-        <HookFormInput
-          name="password"
-          control={form.control}
-          type="password"
-          placeholder="Password"
-          className="border p-2 rounded"
-        />
-        {error && <p className="text-red-600 mt-2">{error}</p>}
-        
-        <SubmitButton text="Login" isLoading={isLoading} disabled={!form.formState.isValid} />
-        <p className="text-center mt-4">
-          Don't have an account?{' '}
-          <a href="/signup" className="text-blue-500 hover:underline">
-            Sign up
-          </a>
-        </p>
-      </form>
+
+      </div>
     </div>
   );
 }
