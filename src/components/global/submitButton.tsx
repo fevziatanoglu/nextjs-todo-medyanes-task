@@ -8,14 +8,14 @@ export default function SubmitButton({
 }: {
   isLoading: boolean;
   disabled?: boolean;
-  text?: string;
+  text?: string | React.ReactNode;
   className?: string;
 }) {
   return (
     <button
       type="submit"
       disabled={isLoading || disabled}
-      className={`w-full py-3 px-4 rounded-lg text-white font-semibold transition duration-200 ease-in-out transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center justify-center space-x-2 ${
+      className={`py-3 px-4 rounded-lg text-white font-semibold transition duration-200 ease-in-out transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center justify-center space-x-2 ${
         isLoading || disabled 
           ? 'bg-gray-400 cursor-not-allowed transform-none' 
           : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700'

@@ -29,12 +29,12 @@ export default function TodoItem({
   };
 
   return (
-    <div className="group relative bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-2xl p-4 mb-3 transition-all duration-300 hover:shadow-lg hover:shadow-gray-200/40 hover:border-gray-300/60 hover:-translate-y-0.5">
+    <div className="group relative bg-white border border-gray-300 rounded-lg p-4 mb-3 transition-all duration-200 hover:shadow-lg hover:border-gray-400">
       {/* Completion indicator line */}
-      <div className={`absolute left-0 top-0 bottom-0 w-1 rounded-l-2xl transition-all duration-300 ${
+      <div className={`absolute left-0 top-0 bottom-0 w-1 rounded-l-lg transition-all duration-300 ${
         todo.completed 
-          ? "bg-gradient-to-b from-emerald-400 to-emerald-600" 
-          : "bg-gradient-to-b from-blue-400 to-blue-600 opacity-20"
+          ? "bg-gradient-to-b from-blue-600 to-indigo-600" 
+          : "bg-gradient-to-b from-gray-300 to-gray-400"
       }`} />
       
       <div className="flex items-center justify-between ml-2">
@@ -42,15 +42,15 @@ export default function TodoItem({
           {/* Checkbox */}
           <button
             onClick={() => onToggle(todo.id)}
-            className={`relative flex items-center justify-center w-6 h-6 rounded-full border-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+            className={`relative flex items-center justify-center w-6 h-6 rounded-full border-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
               todo.completed
-                ? "bg-gradient-to-br from-emerald-400 to-emerald-600 border-emerald-500 focus:ring-emerald-300"
-                : "border-gray-300 hover:border-blue-400 focus:ring-blue-300 group-hover:border-blue-300"
+                ? "bg-gradient-to-br from-blue-600 to-indigo-600 border-blue-500 focus:ring-blue-300"
+                : "border-gray-300 hover:border-blue-400 focus:ring-blue-300"
             }`}
             aria-label="Toggle Complete"
           >
             <Check 
-              className={`w-4 h-4 text-white transition-all duration-300 ${
+              className={`w-4 h-4 text-white transition-all duration-200 ${
                 todo.completed ? "scale-100 opacity-100" : "scale-0 opacity-0"
               }`} 
             />
@@ -61,7 +61,7 @@ export default function TodoItem({
             <input
               value={editTitle}
               onChange={e => setEditTitle(e.target.value)}
-              className="flex-1 text-lg font-medium bg-transparent border-b-2 border-blue-400 outline-none px-0 py-1 focus:border-blue-500 transition-colors duration-200"
+              className="text-black flex-1 text-lg font-medium bg-transparent border-b-2 border-blue-500 outline-none px-0 py-1 focus:border-indigo-500 transition-colors duration-200"
               autoFocus
               onKeyDown={e => {
                 if (e.key === "Enter") handleSave();
@@ -69,30 +69,30 @@ export default function TodoItem({
               }}
             />
           ) : (
-            <span className={`flex-1 text-lg font-medium transition-all duration-300 ${
+            <span className={`flex-1 text-lg font-medium transition-all duration-200 ${
               todo.completed 
-                ? "line-through text-gray-400" 
-                : "text-gray-800 group-hover:text-gray-900"
+                ? "line-through text-gray-500" 
+                : "text-gray-800"
             }`}>
               {todo.title}
             </span>
           )}
         </div>
         
-        {/* Action Buttons */}
-        <div className="flex items-center space-x-1">
+        {/* Action Buttons - Always visible with modern colors */}
+        <div className="flex items-center space-x-2">
           {isEditing ? (
             <>
               <button
                 onClick={handleSave}
-                className="p-2 rounded-xl bg-emerald-50 text-emerald-600 hover:bg-emerald-100 hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-300"
+                className="p-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 aria-label="Save"
               >
                 <Save className="w-4 h-4" />
               </button>
               <button
                 onClick={handleCancel}
-                className="p-2 rounded-xl bg-gray-50 text-gray-500 hover:bg-gray-100 hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                className="p-2 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2"
                 aria-label="Cancel"
               >
                 <X className="w-4 h-4" />
@@ -102,14 +102,14 @@ export default function TodoItem({
             <>
               <button
                 onClick={handleEdit}
-                className="p-2 rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-100 hover:scale-105 transition-all duration-200 opacity-0 group-hover:opacity-100 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                className="p-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 aria-label="Edit"
               >
                 <Edit className="w-4 h-4" />
               </button>
               <button
                 onClick={() => onDelete(todo.id)}
-                className="p-2 rounded-xl bg-red-50 text-red-500 hover:bg-red-100 hover:scale-105 transition-all duration-200 opacity-0 group-hover:opacity-100 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-red-300"
+                className="p-2 rounded-lg bg-red-500 text-white hover:bg-red-600 hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                 aria-label="Delete"
               >
                 <Trash2 className="w-4 h-4" />
