@@ -1,3 +1,4 @@
+import { addTodoAction, deleteTodoAction, fetchTodosAction, updateTodoAction } from "@/app/actions/todosActions";
 import { Todo } from "@/types/todo";
 import React from "react";
 import { toast } from "react-toastify";
@@ -20,12 +21,8 @@ export const createTodoSlice = (set: any, get: any): TodoStore => ({
   fetchTodos: async () => {
     set({ isTodoLoading: true, error: null });
     try {
-      const res = await fetch('/api/todos');
-      const data = await res.json();
-      if (!res.ok) {
-        toast.error(data.error || 'Failed to fetch todos');
-      }
-      set({ todos: data.todos });
+      const todos = await fetchTodosAction();
+      set({ todos });
     } catch (err: any) {
       toast.error(err.message || 'Failed to fetch todos');
     } finally {
@@ -35,17 +32,12 @@ export const createTodoSlice = (set: any, get: any): TodoStore => ({
   addTodo: async (title) => {
     set({ isTodoLoading: true, error: null });
     try {
-      const res = await fetch('/api/todos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        toast.error(data.error || 'Failed to add todo');
+      const todo = await addTodoAction(title);
+      if (todo) {
+        toast.error('Failed to add todo');
       } else {
         toast.success('Todo added successfully');
-        set({ todos: [...get().todos, data.todo] });
+        set({ todos: [...get().todos, todo] });
       }
     } catch (err: any) {
       toast.error(err.message || 'Failed to add todo');
@@ -56,18 +48,13 @@ export const createTodoSlice = (set: any, get: any): TodoStore => ({
   updateTodo: async (id, updates) => {
     set({ isTodoLoading: true, error: null });
     try {
-      const res = await fetch(`/api/todos/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updates),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        toast.error(data.error || 'Failed to update todo');
+      const updatedTodo = updateTodoAction(id, updates);
+      if (!updatedTodo) {
+        toast.error('Failed to update todo');
       } else {
         set({
           todos: get().todos.map((todo: Todo) =>
-            todo.id === id ? { ...todo, ...data.todo } : todo
+            todo.id === id ? { ...todo, updateTodoAction } : todo
           ),
         });
         toast.success('Todo updated successfully');
@@ -81,11 +68,10 @@ export const createTodoSlice = (set: any, get: any): TodoStore => ({
   deleteTodo: async (id) => {
     set({ isTodoLoading: true, error: null });
     try {
-      const res = await fetch(`/api/todos/${id}`, { method: 'DELETE' });
-      if (!res.ok) {
+      const deletedTodo = deleteTodoAction(id);
+      if (!deletedTodo) {
         toast.error('Failed to delete todo');
       } else {
-        const deletedTodo = get().todos.find((todo: Todo) => todo.id === id);
         set({ todos: get().todos.filter((todo: Todo) => todo.id !== id) });
         toast.success(
           React.createElement(
