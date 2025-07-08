@@ -4,6 +4,7 @@ import { SessionProvider } from 'next-auth/react';
 import './globals.css'
 import Navbar from '@/components/navbar/navbar';
 import Modal from '@/components/modal/modal';
+import { ToastContainer } from 'react-toastify';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -13,6 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Navbar />
           <Modal/>
           {children}
+          <ToastContainer />
         </SessionProvider>
       </body>
     </html>
