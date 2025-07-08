@@ -4,6 +4,7 @@ import useRootStore from '@/store';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import LoadingPage from '../loading';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   const { data: session, status } = useSession();
@@ -23,7 +24,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
     }
   }, [session, status, router, setUser]);
 
-  if (status === 'loading') return <div>Loading...</div>; 
+  if (status === 'loading') return <LoadingPage />; 
 
   if (status === 'authenticated' && session) {
     return <>{children}</>;
